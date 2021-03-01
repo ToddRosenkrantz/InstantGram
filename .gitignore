@@ -13,4 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
-/gradle/secure.properties
+/app/src/androidTest/
+/app/src/test/
+/secure.properties
+/Intantgram_1.gif.stg

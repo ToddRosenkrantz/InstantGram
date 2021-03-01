@@ -6,4 +6,83 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayoutTopBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/ibCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:foregroundTint="@color/black"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="272dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/instantgram" />
+
+        <ImageButton
+            android:id="@+id/imageButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/white"
+            app:srcCompat="@drawable/direct" />
+
+    </LinearLayout>
+    <!-- res/layout/example_activity.xml -->
+   <!--
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayoutTopBar"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayoutTopBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.fragment.app.FragmentContainerView>
+
+-->
+    <LinearLayout
+        android:id="@+id/linearLayoutBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="205dp">
+
+        <ImageButton
+            android:id="@+id/ibHome"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/colorBackground"
+            app:srcCompat="@drawable/instagram_home_filled_24" />
+
+        <ImageButton
+            android:id="@+id/ibPost"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/colorBackground"
+            app:srcCompat="@drawable/instagram_new_post_outline_24" />
+
+        <ImageButton
+            android:id="@+id/ibProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="?android:attr/colorBackground"
+            app:srcCompat="@drawable/instagram_user_outline_24" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
