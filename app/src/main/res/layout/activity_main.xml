@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:foregroundTint="@color/black"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayoutTopBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -20,7 +22,9 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:foregroundTint="@color/black"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
+            android:tint="@color/black"
+            android:tintMode="src_in"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -32,14 +36,36 @@
         <ImageButton
             android:id="@+id/imageButton5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@color/white"
             app:srcCompat="@drawable/direct" />
 
     </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/menu_bottom_navigation" />
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="0dp"
+        android:layout_height="596dp"
+        android:layout_above="@+id/bottomNavigation"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTopBar">
+
+    </FrameLayout>
     <!-- res/layout/example_activity.xml -->
-   <!--
+    <!--
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
@@ -52,7 +78,7 @@
 
 </androidx.fragment.app.FragmentContainerView>
 
--->
+
     <LinearLayout
         android:id="@+id/linearLayoutBottomBar"
         android:layout_width="match_parent"
@@ -85,4 +111,5 @@
             android:background="?android:attr/colorBackground"
             app:srcCompat="@drawable/instagram_user_outline_24" />
     </LinearLayout>
+/-->
 </androidx.constraintlayout.widget.ConstraintLayout>

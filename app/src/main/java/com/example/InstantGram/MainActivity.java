@@ -1,15 +1,20 @@
 package com.example.InstantGram;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.example.InstantGram.fragments.ComposeFragment;
+import com.example.InstantGram.fragments.PostsFragment;
+import com.example.InstantGram.fragments.ProfileFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -18,115 +23,56 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
-    private ImageButton ibHome;
-    private ImageButton ibPost;
-    private ImageButton ibProfile;
+    final FragmentManager fragmentManager = getSupportFragmentManager();
+
+    private BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ImageButton ibHome = findViewById(R.id.ibHome);
-        final ImageButton ibPost = findViewById(R.id.ibPost);
-        final ImageButton ibProfile = findViewById(R.id.ibProfile);
-
-        queryPosts();
-
-        ibHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-                Log.i(TAG, "onClick Home button");
-                ibHome.setImageResource(R.drawable.instagram_home_filled_24);
-                ibPost.setImageResource(R.drawable.instagram_new_post_outline_24);
-                ibProfile.setImageResource(R.drawable.instagram_user_outline_24);
-//                loginViewModel.login(etUserName.getText().toString(),
-//                        etPassword.getText().toString());
-//                loadingProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-        ibPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-                Log.i(TAG, "onClick Post button");
-                ibHome.setImageResource(R.drawable.instagram_home_outline_24);
-                ibPost.setImageResource(R.drawable.instagram_new_post_filled_24);
-                ibProfile.setImageResource(R.drawable.instagram_user_outline_24);
-//                loginViewModel.login(etUserName.getText().toString(),
-//                        etPassword.getText().toString());
-//                loadingProgressBar.setVisibility(View.INVISIBLE);
-                goPostActivity();
-            }
-        });
-        ibProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                loadingProgressBar.setVisibility(View.VISIBLE);
-                Log.i(TAG, "onClick Profile button");
-                ibHome.setImageResource(R.drawable.instagram_home_outline_24);
-                ibPost.setImageResource(R.drawable.instagram_new_post_outline_24);
-                ibProfile.setImageResource(R.drawable.instagram_user_filled_24);
-//                loginViewModel.login(etUserName.getText().toString(),
-//                        etPassword.getText().toString());
-//                loadingProgressBar.setVisibility(View.INVISIBLE);
-                goProfile();
-            }
-        });
+        bottomNavigationView = findViewById(R.id.bottomNavigation);
 
 
-    }
-    private void queryPosts(){
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include((Post.KEY_USER));
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if(e != null){
-                    Log.e(TAG,"Errory in query " + e.getMessage(), e);
-                    return;
-                }
-                for(Post post : posts){
-                        Log.i(TAG, "Post: " + post.getDescription() + ", username: " + post.getUser().getUsername());
-                }
-
-            }
-        });
-    }
-    private void goPostActivity() {
-        Intent i = new Intent(this, PostActivity.class);
-        startActivity(i);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
-        ibProfile.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                // change images, go to activity/fragment
-                ibHome.setImageResource(R.drawable.instagram_home_outline_24);
-                ibProfile.setImageResource(R.drawable.instagram_user_filled_24);
-            }
-        });
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.miLogout:
-                goProfile();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    private void goProfile() {
-        Intent i = new Intent(this, LogoutActivity.class);
-        startActivity(i);
+// define your fragments here
+        final Fragment postsFragment = new PostsFragment();
+        final Fragment composeFragment = new ComposeFragment();
+        final Fragment profileFragment = new ProfileFragment();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, new PostsFragment()).commit();
+        // handle navigation selection
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        Fragment fragment;
+                        bottomNavigationView.getMenu().findItem(R.id.action_home).setIcon(R.drawable.instagram_home_outline_24);
+                        bottomNavigationView.getMenu().findItem(R.id.action_compose).setIcon(R.drawable.instagram_new_post_outline_24);
+                        bottomNavigationView.getMenu().findItem(R.id.action_profile).setIcon(R.drawable.instagram_user_outline_24);
+                        switch (item.getItemId()) {
+                            case R.id.action_compose:
+                                fragment = composeFragment;
+                                item.setIcon(R.drawable.instagram_new_post_filled_24);
+//                                Toast.makeText(MainActivity.this,"Selected Compose",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.action_profile:
+                                item.setIcon(R.drawable.instagram_user_filled_24);
+                                fragment = profileFragment;
+//                                Toast.makeText(MainActivity.this,"Selected Profile",Toast.LENGTH_LONG).show();
+                                break;
+                            case R.id.action_home:
+                            default:
+                                item.setIcon(R.drawable.instagram_home_filled_24);
+                                fragment = postsFragment;
+//                                Toast.makeText(MainActivity.this,"Selected Home",Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+                        return true;
+                    }
+                });
+        // Set default selection
+        bottomNavigationView.setSelectedItemId(R.id.home);
     }
 }
